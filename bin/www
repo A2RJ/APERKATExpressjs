@@ -1,7 +1,16 @@
 require("dotenv").config();
 const app = require("../app");
+const { setWaCache } = require("../helper/cache");
+const { wa } = require("../helper/wa");
 const PORT = process.env.PORT || 8080;
 
+const initWhatsapp = () => {
+  console.log("Initilize whatsapp");
+  setWaCache(false);
+  wa.initialize();
+};
+
 app.listen(PORT, () => {
-  console.log(`🚀 @ http://localhost:${PORT}`);
+  console.log(`🚀 http://localhost:${PORT}`);
+  // initWhatsapp();
 });

@@ -15,12 +15,16 @@ class waController {
 
   static async sendMessage(req, res, next) {
     try {
-      const number = "+62812345678910";
-      const text = "Hey john";
-      const chatId = number.substring(1) + "@c.us";
-      const isRegistered = await wa.isRegisteredUser(chatId);
-      if (!isRegistered) throw { name: "UserIsNotRegistered" };
-      wa.sendMessage(chatId, text);
+      const { number, text } = req.body;
+      if (!number || !text) throw { name: "NumberTextRequired" };
+
+      for (let chatId in number) {
+        chatId = number[chatId].substring(1) + "@c.us";
+        const isRegistered = await wa.isRegisteredUser(chatId);
+        // if (!isRegistered) throw { name: "UserIsNotRegistered" };
+        if (isRegistered) wa.sendMessage(chatId, text);
+      }
+
       res.json({
         message: "Chat has been sent",
       });
