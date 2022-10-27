@@ -12,5 +12,5 @@ const initWhatsapp = () => {
 
 app.listen(PORT, () => {
   console.log(`🚀 http://localhost:${PORT}`);
-  // initWhatsapp();
+  initWhatsapp();
 });
