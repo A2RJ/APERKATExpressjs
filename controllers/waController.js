@@ -19,10 +19,20 @@ class waController {
       if (!number || !text) throw { name: "NumberTextRequired" };
 
       for (let chatId in number) {
-        chatId = number[chatId].substring(1) + "@c.us";
-        const isRegistered = await wa.isRegisteredUser(chatId);
-        // if (!isRegistered) throw { name: "UserIsNotRegistered" };
-        if (isRegistered) wa.sendMessage(chatId, text);
+        chatId = number[chatId];
+        if (chatId.length >= 11) {
+          if (chatId.slice(0, 3) === "+62") {
+            chatId = chatId.substring(1);
+          } else if (chatId.slice(0, 2) === "08") {
+            chatId = "62" + chatId.substring(1);
+          } else if (chatId.slice(0, 2) === "62") {
+            chatId = chatId;
+          }
+          chatId = chatId + "@c.us";
+          const isRegistered = await wa.isRegisteredUser(chatId);
+          // if (!isRegistered) throw { name: "UserIsNotRegistered" };
+          if (isRegistered) wa.sendMessage(chatId, text);
+        }
       }
 
       res.json({
